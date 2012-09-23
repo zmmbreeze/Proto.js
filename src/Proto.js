@@ -126,7 +126,6 @@ var Proto = (function() {
 
             return function() {
                 var args = toArray(arguments);
-        console.log()
                 if (!cache[method]) {
                     // make supr function and cache it
                     cache[method] = Source[method] ? function(self) {
