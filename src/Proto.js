@@ -4,6 +4,7 @@
  * 
  *
  * @author mzhou / @zhoumm
+ * @log 0.1
  *
  */
 var Proto = (function() {
