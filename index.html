@@ -4,47 +4,47 @@
     <meta charset="UTF-8">
     <title>Proto.js</title>
 
-	<meta name="description" content="Mixin based OOP library in javascript">
-	<meta name="author" content="mzhou">
+    <meta name="description" content="Mixin based OOP library in javascript">
+    <meta name="author" content="mzhou">
 
-	<!-- Mobile Specific Metas
-	================================================== -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<link rel="stylesheet" href="prism/prism.css"/>
-	<style>
-	body {
-		font: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	}
-	.container {
-		margin: 0 auto;
-		width: 600px;
-	}
-	.container p {
-		font-size: 18px;
-	}
+    <!-- Mobile Specific Metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="prism/prism.css"/>
+    <style>
+    body {
+        font: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    }
+    .container {
+        margin: 0 auto;
+        width: 600px;
+    }
+    .container p {
+        font-size: 18px;
+    }
 
-	</style>
+    </style>
 </head>
 <body>
 <div class="container">
-	<h1>Proto.js</h1>
-	<p>Mixin based OOP library in javascript.</p>
-	<p>
-		<a href="">Github</a>&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="">Download</a>
-	</p>
-	<h2>Demo:</h2>
-	<pre class="language-javascript"><code id="demo">// Person
+    <h1>Proto.js</h1>
+    <p>Mixin based OOP library in javascript.</p>
+    <p>
+        <a href="">Github</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="">Download</a>
+    </p>
+    <h2>Demo:</h2>
+    <pre class="language-javascript"><code id="demo">// Person
 // Method: Proto.$extend
-// 		@param {function} construtor [option]
-// 		@return {function} Class
+//      @param {function} construtor [option]
+//      @return {function} Class
 var Person = Proto.$extend(function(supr, name, age) {
   this.age = age;
   this.name = name;
 });
 // Method: $methods
-// 		@param {object} map methods to be added
-// 		@return {function} Class
+//      @param {object} map methods to be added
+//      @return {function} Class
 Person.$methods({
   say: function(supr) {
     console.log('I\'m a Person.');
@@ -53,8 +53,8 @@ Person.$methods({
   }
 });
 // Method: $statics
-// 		@param {object} map static methods to be added
-// 		@return {function} Class
+//      @param {object} map static methods to be added
+//      @return {function} Class
 Person.$statics({
   doSomething: function(supr) {
     console.log('Do something!');
@@ -86,11 +86,11 @@ Singable.$methods({
 //Singer
 var Singer = Person.$extend(function(supr, name, age) {
     // use supr to call Person's constructor
-	supr(this, name, age);
-	console.log('=== A great singer was born ===');
+    supr(this, name, age);
+    console.log('=== A great singer was born ===');
 });
 // Method: $mixin
-// 		@param {function} Class to be mixined
+//      @param {function} Class to be mixined
 //      @return {function} this Class
 Singer.$mixin(Singable);
 
@@ -103,19 +103,19 @@ ladyGaga.say();
 ladyGaga.sing();
 
 // Method: $from
-// 		@param {function} Class
+//      @param {function} Class
 //      
 console.log(ladyGaga.$from(Singer) === true);
 console.log(ladyGaga.$from(Person) === true);
 console.log(ladyGaga.$from(Proto) === true);
 console.log(ladyGaga.$from(Singable) === false);
-	</code></pre>
+    </code></pre>
 </div>
-	<script src="src/Proto.js"></script>
-	<script>
-	var code = document.getElementById('demo').innerHTML;
-	eval(code);
-	</script>
-	<script src="prism/prism.js"></script>
+    <script src="src/Proto.js"></script>
+    <script>
+    var code = document.getElementById('demo').innerHTML;
+    eval(code);
+    </script>
+    <script src="prism/prism.js"></script>
 </body>
 </html>

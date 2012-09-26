@@ -288,6 +288,30 @@ describe('Proto.js', function() {
             expect(b.vSF).toEqual(1);
         });
     });
+
+    it('Proto.js: recursive test', function() {
+        runs(function() {
+            var R = Proto.$extend(function(supr, i) {
+                this.i = i;
+            });
+            R.$methods('plusUntil', function(supr, max) {
+                if (this.i < max) {
+                    this.i++;
+                    this.plusUntil(max);
+                }
+                return this;
+            });
+            var R2 = R.$extend();
+            R2.$methods('plusUntil', function(supr, max) {
+                this.i++;
+                return supr(this, max);
+            });
+            var r = new R(1).plusUntil(10);
+            expect(r.i).toEqual(10);
+            var r2 = new R2(1).plusUntil(10);
+            expect(r2.i).toEqual(10);
+        });
+    });
 });
 
 // report
