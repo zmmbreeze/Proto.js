@@ -10,12 +10,12 @@
 var Proto = (function() {
     var ArrayProtoSlice = Array.prototype.slice,
         reservedMethod = {
-            $from: 1
+            '$from': 1
         },
         reservedStaticMethod = {
-            $methods: 1,
-            $statics: 1,
-            prototype: 1
+            '$methods': 1,
+            '$statics': 1,
+            'prototype': 1
         };
 
     /**
@@ -30,6 +30,7 @@ var Proto = (function() {
 
     /**
      * mixin two class
+     * only copy function
      *
      * @param {object/function} Source
      * @param {function} Target
@@ -41,7 +42,9 @@ var Proto = (function() {
 
         // copy static method
         for (staticMethod in Source) {
-            if (!reservedStaticMethod[staticMethod] && Source.hasOwnProperty(staticMethod)) {
+            if (!reservedStaticMethod[staticMethod] &&
+                Source.hasOwnProperty(staticMethod) &&
+                (typeof Source[staticMethod] === 'function')) {
                 Target[staticMethod] = Source[staticMethod];
             }
         }
@@ -50,9 +53,23 @@ var Proto = (function() {
         SourceProto = Source.prototype,
         TargetProto = Target.prototype;
         for (method in SourceProto) {
-            if (!reservedMethod[method] && SourceProto.hasOwnProperty(method)) {
+            if (!reservedMethod[method] &&
+                SourceProto.hasOwnProperty(method) &&
+                (typeof SourceProto[method] === 'function')) {
                 TargetProto[method] = SourceProto[method];
             }
+        }
+    }
+
+    /**
+     * Check input is a function
+     * @param {string} msg error message
+     * @param {function} func function
+     *
+     */
+    function checkFunction(msg, func) {
+        if (typeof func !== 'function') {
+            throw new Error(msg + ': Method must be function.');
         }
     }
 
@@ -156,10 +173,12 @@ var Proto = (function() {
 
             // setup real methods
             if (typeof name === 'string') {
+                checkFunction('$methods()', func);
                 ClassProto[name] = make(name, func, Source);
             } else {
                 for (method in name) {
                     if (name.hasOwnProperty(method)) {
+                        checkFunction('$methods()', name[method]);
                         ClassProto[method] = make(method, name[method], Source);
                     }
                 }
@@ -182,10 +201,12 @@ var Proto = (function() {
 
             // setup real methods
             if (typeof name === 'string') {
+                checkFunction('$statics()', func);
                 Class[name] = make(name, func, Source, true);
             } else {
                 for (method in name) {
                     if (name.hasOwnProperty(method)) {
+                        checkFunction('$statics()', name[method]);
                         Class[method] = make(method, name[method], Source, true);
                     }
                 }

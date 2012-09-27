@@ -312,6 +312,37 @@ describe('Proto.js', function() {
             expect(r2.i).toEqual(10);
         });
     });
+
+    it('Proto.js: type check test', function() {
+        runs(function() {
+            var Father = Proto.$extend();
+            try {
+                // must be function
+                Father.$methods('say', 1);
+            } catch (e) {
+                expect(e.message).toEqual('$methods(): Method must be function.');
+            }
+            try {
+                // must be function
+                Father.$statics('say', 1);
+            } catch (e) {
+                expect(e.message).toEqual('$statics(): Method must be function.');
+            }
+            Father.prototype.test = function() {
+                if (this.testValue) {
+                    return this.testValue;
+                }
+                return 'true';
+            };
+            // not recommend, use constructor to set property
+            Father.prototype.testValue = 'false';
+            expect(new Father().test()).toEqual('false');
+            var Son = Father.$extend();
+            // won't copy property
+            // but copy methods
+            expect(new Son().test()).toEqual('true');
+        });
+    });
 });
 
 // report
