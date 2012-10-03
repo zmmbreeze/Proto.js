@@ -343,6 +343,44 @@ describe('Proto.js', function() {
             expect(new Son().test()).toEqual('true');
         });
     });
+
+    it('Proto.js: supr cache test', function() {
+        runs(function() {
+            var Father = Proto.$extend();
+            Father.$methods('get', function() {
+                return 1;
+            });
+            var Son1 = Father.$extend(),
+                Son1Supr = [],
+                Son2 = Father.$extend(),
+                Son2Supr = [];
+            Son1.$methods('get', function(supr) {
+                Son1Supr.push(supr);
+            });
+            Son2.$methods('get', function(supr) {
+                Son2Supr.push(supr);
+            });
+            new Son1().get();
+            new Son1().get();
+            new Son1().get();
+            new Son1().get();
+            new Son1().get();
+            new Son2().get();
+            new Son2().get();
+            new Son2().get();
+            new Son2().get();
+            new Son2().get();
+            new Son2().get();
+            var i, l;
+            for (i=0,l=Son1Supr.length; i<l; i++) {
+                expect(Son1Supr[0]).toEqual(Son1Supr[i]);
+            }
+
+            for (i=0,l=Son2Supr.length; i<l; i++) {
+                expect(Son2Supr[0]).toEqual(Son2Supr[i]);
+            }
+        });
+    });
 });
 
 // report
